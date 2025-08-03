@@ -1,12 +1,22 @@
-let margaritaUrl =
-	"https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita";
-console.log("Fetching:", margaritaUrl);
+export function getRandomDrink(num) {
+	let randomDrinkUrl =
+		"https://www.thecocktaildb.com/api/json/v1/1/random.php";
+	//create variables
+	const fetchPromises = [];
 
-fetch(margaritaUrl)
-	.then((fetchData) => {
-		console.log("Raw response:", fetchData);
-		return fetchData.json();
-	})
-	.then((urlJson) => {
-		console.log("Parsed JSON:", urlJson);
-	});
+	//loop based on argument
+	while (num > 0) {
+		const promise = fetch(randomDrinkUrl)
+			.then((fetchData) => {
+				return fetchData.json();
+			})
+			.then((urlJson) => {
+				return urlJson.drinks[0];
+			});
+		fetchPromises.push(promise);
+		num--;
+	}
+
+	return Promise.all(fetchPromises);
+}
+getRandomDrink(5).then((data) => console.log("Function call:", data));

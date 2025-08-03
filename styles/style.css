@@ -6,3 +6,9 @@ header {
 	box-shadow: 0px 3px 0px 0px #a5a5a5;
 	margin-bottom: 3px;
 }
+.drink-container {
+	display: flex;
+}
+.card {
+	max-width: 5rem;
+}
