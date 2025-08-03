@@ -19,4 +19,4 @@ export function getRandomDrink(num) {
 
 	return Promise.all(fetchPromises);
 }
-getRandomDrink(5).then((data) => console.log("Function call:", data));
+// getRandomDrink(5).then((data) => console.log("Function call:", data));
