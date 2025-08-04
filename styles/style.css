@@ -40,18 +40,18 @@ header {
 	overflow: hidden;
 }
 .info-text {
-	visibility: hidden;
-	background-color: black;
-	color: #fff;
+	list-style-type: none;
+	background-color: #f2f2f2;
+	color: #595959;
 	text-align: center;
 	border-radius: 6px;
 	padding: 5px;
 	position: absolute;
-	z-index: 1;
-	bottom: 100%;
-	left: 50%;
-	transform: translateX(-50%);
-	white-space: nowrap;
+
 	opacity: 0;
 	transition: opacity 0.3s;
+}
+/* on hover show ingrediants */
+.card:hover .info-text {
+	opacity: 1;
 }
