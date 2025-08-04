@@ -13,9 +13,34 @@ export function createDrinkCard(drink) {
 	cardTitle.innerHTML = drink.strDrink;
 	card.appendChild(cardTitle);
 
+	const info = document.createElement("div");
+	info.classList.add("info");
+
 	const cardImg = document.createElement("img");
 	cardImg.src = drink.strDrinkThumb;
-	cardImg.classList.add();
+
+	function extractIngredients(drink) {
+		const ingredients = [];
+
+		for (let i = 1; i <= 15; i++) {
+			const ingredient = drink[`strIngredient${i}`];
+			if (ingredient) {
+				ingredients.push(ingredient);
+			} else {
+				break;
+			}
+		}
+
+		return ingredients;
+	}
+	const createIngredientsHTML = (ingredients) => {
+		return `
+		<ul class="info-text">
+			${ingredients.map((item) => `<li>${item}</li>`).join("")}
+		</ul>
+	`;
+	};
+	info.innerHTML = createIngredientsHTML(extractIngredients(drink));
 
 	const category = document.createElement("h3");
 	category.innerHTML = drink.strCategory;
@@ -31,13 +56,14 @@ export function createDrinkCard(drink) {
 	//append everything to create the actual card in html
 	drinkContainer.appendChild(card);
 	card.appendChild(cardTitle);
-	card.appendChild(cardImg);
+	card.appendChild(info);
+	info.appendChild(cardImg);
 	card.appendChild(category);
 	if (drink.strAlcoholic !== "Alcoholic") {
 		card.appendChild(alcoholType);
 	}
 }
-getRandomDrink(10).then((drink) => {
-	console.log("Function BBall:", drink);
+getRandomDrink(30).then((drink) => {
+	console.log("Drinks Data:", drink);
 	drink.forEach((drink) => createDrinkCard(drink));
 });

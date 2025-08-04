@@ -2,6 +2,11 @@
 	color: #595959;
 	background-color: #f2f2f2;
 }
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
 .verticle-container {
 	display: flex;
 	flex-direction: column;
@@ -9,10 +14,9 @@
 	justify-content: center;
 }
 .verticle-container.favs-section {
-	background-color: #f8b3cb;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	background-color: #aecbeb;
 }
 .favorite {
-	background-color: #a51c30;
+	background-color: #424040;
 	color: #f2f2f2;
 }
