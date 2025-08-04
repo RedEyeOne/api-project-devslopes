@@ -2,3 +2,17 @@
 	color: #595959;
 	background-color: #f2f2f2;
 }
+.verticle-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.verticle-container.favs-section {
+	background-color: #f8b3cb;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.favorite {
+	background-color: #a51c30;
+	color: #f2f2f2;
+}

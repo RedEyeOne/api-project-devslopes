@@ -6,7 +6,7 @@ export function getRandomDrink(num) {
 
 	//loop based on argument
 	while (num > 0) {
-		const promise = fetch(randomDrinkUrl)
+		let promise = fetch(randomDrinkUrl)
 			.then((fetchData) => {
 				return fetchData.json();
 			})
@@ -19,4 +19,19 @@ export function getRandomDrink(num) {
 
 	return Promise.all(fetchPromises);
 }
-// getRandomDrink(5).then((data) => console.log("Function call:", data));
+
+export function favoritesApiFetch(favs) {
+	let fetchPromises = [];
+	favs.forEach((id) => {
+		const favDrinkUrl = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+		let promise = fetch(favDrinkUrl)
+			.then((fetchData) => {
+				return fetchData.json();
+			})
+			.then((urlJson) => {
+				return urlJson.drinks[0];
+			});
+		fetchPromises.push(promise);
+	});
+	return Promise.all(fetchPromises);
+}
