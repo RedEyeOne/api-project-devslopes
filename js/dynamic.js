@@ -1,4 +1,4 @@
-import { getRandomDrink } from "./ApiCalls.js";
+import { callFromApi } from "./ApiCalls.js";
 
 const drinkContainerPointer = ".drink-container";
 const drinkContainer = document.querySelector(drinkContainerPointer);
@@ -63,7 +63,9 @@ export function createDrinkCard(drink) {
 		card.appendChild(alcoholType);
 	}
 }
-getRandomDrink(30).then((drink) => {
-	console.log("Drinks Data:", drink);
-	drink.forEach((drink) => createDrinkCard(drink));
-});
+callFromApi("https://www.thecocktaildb.com/api/json/v1/1/random.php", 30).then(
+	(drink) => {
+		console.log("Drinks Data:", drink);
+		drink.forEach((drink) => createDrinkCard(drink));
+	}
+);

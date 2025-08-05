@@ -1,9 +1,16 @@
-import { favoritesApiFetch } from "./ApiCalls.js";
+import { callFromApi } from "./ApiCalls.js";
 import { createDrinkCard } from "./dynamic.js";
 let favsContainer = document.querySelector(".favs-container");
 let cardsContainer = document.querySelector(".drink-container");
 function getFavorites() {
-	return JSON.parse(localStorage.getItem("favs")) || [];
+	try {
+		const favs = localStorage.getItem("favs");
+		return favs ? JSON.parse(favs) : [];
+	} catch (e) {
+		console.error("Failed to parse favorites from localStorage:", e);
+		localStorage.removeItem("favs"); // Optional: clean up corrupted data
+		return [];
+	}
 }
 function setFavs(favs) {
 	localStorage.setItem("favs", JSON.stringify(favs));
@@ -32,8 +39,18 @@ function createFavoriteDrink(id) {}
 
 function synchStorage() {
 	const favs = getFavorites();
-	favoritesApiFetch(favs).then((data) => {
-		data.forEach((drink) => {
+	if (!favs.length) return;
+	const fetchPromises = favs.map((id) => {
+		return callFromApi(
+			`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`,
+			1
+		);
+	});
+	console.log(fetchPromises);
+
+	Promise.all(fetchPromises).then((data) => {
+		const drinks = data.flat();
+		drinks.forEach((drink) => {
 			createDrinkCard(drink);
 			addToFavorites(drink.idDrink);
 		});
