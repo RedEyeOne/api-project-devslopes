@@ -8,7 +8,6 @@ function getFavorites() {
 		return favs ? JSON.parse(favs) : [];
 	} catch (e) {
 		console.error("Failed to parse favorites from localStorage:", e);
-		localStorage.removeItem("favs"); // Optional: clean up corrupted data
 		return [];
 	}
 }
@@ -46,8 +45,6 @@ function synchStorage() {
 			1
 		);
 	});
-	console.log(fetchPromises);
-
 	Promise.all(fetchPromises).then((data) => {
 		const drinks = data.flat();
 		drinks.forEach((drink) => {
