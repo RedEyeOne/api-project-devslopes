@@ -29,6 +29,12 @@
 		</div>
 		<div class="verticle-container randoms-section">
 			<h4>Random Drink Ideas</h4>
+			<select name="sort by" id="sort-by-select">
+				<option selected="true" value="">Sort By</option>
+				<option value="a-z">a-z</option>
+				<option value="z-a">z-a</option>
+				<option value="type">Type</option>
+			</select>
 			<div class="drink-container">
 				<!-- dummy card -->
 				<!-- <div class="card">
@@ -48,5 +54,6 @@
 		<script type="module" src="./js/ApiCalls.js" ;></script>
 		<script type="module" src="./js/dynamic.js"></script>
 		<script type="module" src="./js/favorites.js"></script>
+		<script type="module" src="./js/sorting.js"></script>
 	</body>
 </html>

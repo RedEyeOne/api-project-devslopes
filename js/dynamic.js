@@ -1,5 +1,11 @@
 import { callFromApi } from "./ApiCalls.js";
 
+//callback variables
+const randomUrl = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
+const targetCount = 30;
+const uniqueMap = new Map();
+
+//container variable
 const drinkContainerPointer = ".drink-container";
 const drinkContainer = document.querySelector(drinkContainerPointer);
 
@@ -63,9 +69,27 @@ export function createDrinkCard(drink) {
 		card.appendChild(alcoholType);
 	}
 }
-callFromApi("https://www.thecocktaildb.com/api/json/v1/1/random.php", 30).then(
-	(drink) => {
-		console.log("Drinks Data:", drink);
-		drink.forEach((drink) => createDrinkCard(drink));
+function proccessDrinks(newDrinks) {
+	newDrinks.forEach((drink) => {
+		uniqueMap.set(drink.idDrink, drink);
+	});
+
+	// handle duplicate drinks
+	if (uniqueMap.size < targetCount) {
+		const remaining = targetCount - uniqueMap.size;
+		callFromApi(randomUrl, remaining).then(proccessDrinks);
+	} else {
+		const finalDrinks = [...uniqueMap.values()];
+		console.log(finalDrinks);
+		finalDrinks.forEach((drink) => {
+			createDrinkCard(drink);
+		});
 	}
-);
+}
+
+callFromApi(randomUrl, targetCount).then(proccessDrinks);
+
+// callFromApi(randomUrl, 30).then((drink) => {
+// 	console.log("Drinks Data:", drink);
+// 	drink.forEach((drink) => createDrinkCard(drink));
+// });
