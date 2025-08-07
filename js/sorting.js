@@ -31,8 +31,8 @@ function sortBy(value) {
 		case "type":
 			console.log("case: type");
 			cards.sort((a, b) => {
-				const nameA = a.querySelector("h3").innerText.toLowerCase();
-				const nameB = b.querySelector("h3").innerText.toLowerCase();
+				const nameA = a.querySelector(".type").innerText.toLowerCase();
+				const nameB = b.querySelector(".type").innerText.toLowerCase();
 				return nameA.localeCompare(nameB);
 			});
 

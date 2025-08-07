@@ -49,6 +49,7 @@ export function createDrinkCard(drink) {
 	info.innerHTML = createIngredientsHTML(extractIngredients(drink));
 
 	const category = document.createElement("h3");
+	category.classList.add("type");
 	category.innerHTML = drink.strCategory;
 
 	let alcoholType = null;
