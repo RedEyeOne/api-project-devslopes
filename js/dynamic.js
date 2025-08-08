@@ -1,10 +1,10 @@
 import { callFromApi } from "./ApiCalls.js";
+import { allCards } from "./sorting.js";
 
 //callback variables
 const randomUrl = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
 const targetCount = 30;
 const uniqueMap = new Map();
-const allCards = [];
 
 //container variable
 const drinkContainerPointer = ".drink-container";
@@ -70,6 +70,8 @@ export function createDrinkCard(drink) {
 	if (drink.strAlcoholic !== "Alcoholic") {
 		card.appendChild(alcoholType);
 	}
+	allCards.push(card);
+	return card;
 }
 function retryForDuplicates(newDrinks) {
 	newDrinks.forEach((drink) => {
@@ -77,10 +79,9 @@ function retryForDuplicates(newDrinks) {
 	});
 	if (uniqueMap.size < targetCount) {
 		const remaining = targetCount - uniqueMap.size;
-		callFromApi(randomUrl, remaining).then(retryForDuplicates);
+		return callFromApi(randomUrl, remaining).then(retryForDuplicates);
 	} else {
 		const finalDrinks = [...uniqueMap.values()];
-		console.log(finalDrinks);
 		finalDrinks.forEach((drink) => {
 			createDrinkCard(drink);
 		});
@@ -88,19 +89,6 @@ function retryForDuplicates(newDrinks) {
 	}
 }
 // count drink types with count
-function countTypes(typesList) {
-	const typeMap = new Map();
-	typesList.forEach((individual) => {
-		const type = individual.innerText;
-		if (typeMap.has(type)) {
-			typeMap.set(type, typeMap.get(type) + 1);
-		} else {
-			typeMap.set(type, 1);
-		}
-	});
-	console.log(typeMap);
-	return typeMap;
-}
 
 function createTypeSortDynamic(type, count) {
 	const sortSection = document.getElementById("sort-by-select");
@@ -112,54 +100,44 @@ function createTypeSortDynamic(type, count) {
 	sortSection.innerHTML += createOption(type, count);
 }
 
-function filterDrinksByType(type) {
-	const allCards = Array.from(drinkContainer.children);
-
-	// Clear the container
-	drinkContainer.innerHTML = "";
-
-	// Re-add only matching cards
-	allCards.forEach((card) => {
-		const typeText = card.querySelector(".type").innerHTML;
-		if (typeText === type) {
-			drinkContainer.appendChild(card);
-		}
-	});
-}
 function countTypesFromData(drinks) {
 	const typeMap = new Map();
-
 	drinks.forEach((drink) => {
 		const type = drink.strCategory?.trim() || "Unknown";
-		if (typeMap.type) {
+		if (typeMap.has(type)) {
 			typeMap.set(type, typeMap.get(type) + 1);
 		} else {
 			typeMap.set(type, 1);
 		}
 	});
-	console.log("From function: ", typeMap);
 	return typeMap;
+}
+
+function filterDrinksByType(type, allCards) {
+	drinkContainer.innerHTML = "";
+	const matches = allDrinkCards.filter(
+		(card) => card.querySelector(".type").textContent === type
+	);
+	console.log("Matches found:", matches.length, matches);
+	matches.forEach((drink) => {
+		const card = createDrinkCard(drink);
+		drinkContainer.appendChild(card);
+	});
 }
 
 callFromApi(randomUrl, targetCount)
 	.then(retryForDuplicates)
 	// handle
 	.then((finalDrinks) => {
+		console.log("final drinks: ", finalDrinks);
 		const typeMap = countTypesFromData(finalDrinks);
-		console.log(typeMap);
 		typeMap.forEach((count, type) => {
 			createTypeSortDynamic(type, count);
 		});
-		console.log(allCards);
-		document
-			.getElementById("sort-by-select")
-			.addEventListener("change", (e) => {
-				const selectedType = e.target.value;
-				filterDrinksByType(selectedType);
-			});
+		// document
+		// 	.getElementById("sort-by-select")
+		// 	.addEventListener("change", (e) => {
+		// 		const selectedType = e.target.value;
+		// 		filterDrinksByType(selectedType, finalDrinks);
+		// 	});
 	});
-
-// callFromApi(randomUrl, 30).then((drink) => {
-// 	console.log("Drinks Data:", drink);
-// 	drink.forEach((drink) => createDrinkCard(drink));
-// });
