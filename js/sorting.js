@@ -1,11 +1,5 @@
 const sortSection = document.querySelector("#sort-by-select");
 
-function renderDrinks(drinksArray) {
-	drinksArray.forEach((drink) => {
-		randomsSection.appendChild(drink);
-	});
-}
-
 function sortBy(value) {
 	//grab only cards from the randoms section
 	const randomsSection = document.querySelector(".drink-container");

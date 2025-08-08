@@ -4,6 +4,7 @@ import { callFromApi } from "./ApiCalls.js";
 const randomUrl = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
 const targetCount = 30;
 const uniqueMap = new Map();
+const allCards = [];
 
 //container variable
 const drinkContainerPointer = ".drink-container";
@@ -70,25 +71,93 @@ export function createDrinkCard(drink) {
 		card.appendChild(alcoholType);
 	}
 }
-function proccessDrinks(newDrinks) {
+function retryForDuplicates(newDrinks) {
 	newDrinks.forEach((drink) => {
 		uniqueMap.set(drink.idDrink, drink);
 	});
-
-	// handle duplicate drinks
 	if (uniqueMap.size < targetCount) {
 		const remaining = targetCount - uniqueMap.size;
-		callFromApi(randomUrl, remaining).then(proccessDrinks);
+		callFromApi(randomUrl, remaining).then(retryForDuplicates);
 	} else {
 		const finalDrinks = [...uniqueMap.values()];
 		console.log(finalDrinks);
 		finalDrinks.forEach((drink) => {
 			createDrinkCard(drink);
 		});
+		return Promise.resolve(finalDrinks);
 	}
 }
+// count drink types with count
+function countTypes(typesList) {
+	const typeMap = new Map();
+	typesList.forEach((individual) => {
+		const type = individual.innerText;
+		if (typeMap.has(type)) {
+			typeMap.set(type, typeMap.get(type) + 1);
+		} else {
+			typeMap.set(type, 1);
+		}
+	});
+	console.log(typeMap);
+	return typeMap;
+}
 
-callFromApi(randomUrl, targetCount).then(proccessDrinks);
+function createTypeSortDynamic(type, count) {
+	const sortSection = document.getElementById("sort-by-select");
+
+	const createOption = (type, count) => {
+		return `<option value="${type}">${type} (${count})</option>`;
+	};
+
+	sortSection.innerHTML += createOption(type, count);
+}
+
+function filterDrinksByType(type) {
+	const allCards = Array.from(drinkContainer.children);
+
+	// Clear the container
+	drinkContainer.innerHTML = "";
+
+	// Re-add only matching cards
+	allCards.forEach((card) => {
+		const typeText = card.querySelector(".type").innerHTML;
+		if (typeText === type) {
+			drinkContainer.appendChild(card);
+		}
+	});
+}
+function countTypesFromData(drinks) {
+	const typeMap = new Map();
+
+	drinks.forEach((drink) => {
+		const type = drink.strCategory?.trim() || "Unknown";
+		if (typeMap.type) {
+			typeMap.set(type, typeMap.get(type) + 1);
+		} else {
+			typeMap.set(type, 1);
+		}
+	});
+	console.log("From function: ", typeMap);
+	return typeMap;
+}
+
+callFromApi(randomUrl, targetCount)
+	.then(retryForDuplicates)
+	// handle
+	.then((finalDrinks) => {
+		const typeMap = countTypesFromData(finalDrinks);
+		console.log(typeMap);
+		typeMap.forEach((count, type) => {
+			createTypeSortDynamic(type, count);
+		});
+		console.log(allCards);
+		document
+			.getElementById("sort-by-select")
+			.addEventListener("change", (e) => {
+				const selectedType = e.target.value;
+				filterDrinksByType(selectedType);
+			});
+	});
 
 // callFromApi(randomUrl, 30).then((drink) => {
 // 	console.log("Drinks Data:", drink);
