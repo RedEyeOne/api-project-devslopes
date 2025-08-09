@@ -10,7 +10,7 @@ const uniqueMap = new Map();
 const drinkContainerPointer = ".drink-container";
 const drinkContainer = document.querySelector(drinkContainerPointer);
 
-export function createDrinkCard(drink) {
+export function createDrinkCard(drink, isFavorite = false) {
 	//first create the individual elements dynamicly
 	const card = document.createElement("div");
 	card.classList.add("card");
@@ -70,7 +70,7 @@ export function createDrinkCard(drink) {
 	if (drink.strAlcoholic !== "Alcoholic") {
 		card.appendChild(alcoholType);
 	}
-	allCards.push(card);
+	if (!isFavorite) allCards.push(card);
 	return card;
 }
 function retryForDuplicates(newDrinks) {

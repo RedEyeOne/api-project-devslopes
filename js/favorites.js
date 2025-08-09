@@ -48,7 +48,7 @@ function synchStorage() {
 	Promise.all(fetchPromises).then((data) => {
 		const drinks = data.flat();
 		drinks.forEach((drink) => {
-			createDrinkCard(drink);
+			createDrinkCard(drink, true);
 			addToFavorites(drink.idDrink);
 		});
 	});

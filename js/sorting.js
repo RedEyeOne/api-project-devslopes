@@ -1,22 +1,41 @@
 const sortSection = document.querySelector("#sort-by-select");
 const drinkContainer = document.querySelector(".drink-container");
+const favsContainer = document.querySelector(".favs-container");
 export const allCards = [];
 
 function filterDrinksByType(type) {
-	const allCards = document.querySelectorAll(".card");
 	allCards.forEach((card) => {
+		const isFavorite = card.classList.contains("favorite");
 		const cardType = card.querySelector(".type").textContent;
-		card.style.display = cardType === type ? "" : "none";
+
+		if (isFavorite) {
+			// Show favorites and ensure they are in favsContainer
+			card.style.display = "";
+			if (card.parentElement !== favsContainer) {
+				favsContainer.appendChild(card);
+			}
+		} else {
+			// Show non-favorites matching the filter and keep in main container
+			if (cardType === type || type === "all") {
+				card.style.display = "";
+				if (card.parentElement !== drinkContainer) {
+					drinkContainer.appendChild(card);
+				}
+			} else {
+				card.style.display = "none";
+			}
+		}
 	});
 }
 
 function sortBy(value) {
 	//grab only cards from the randoms section
-	const randomsSection = document.querySelector(".drink-container");
-	allCards.forEach((card) => {
+	const randomsCards = drinkContainer.querySelectorAll(".card");
+	randomsCards.forEach((card) => {
 		card.style.display = ""; // show everything
 	});
-	const cards = [...allCards];
+	const cards = [...randomsCards];
+	console.log(cards);
 	switch (value) {
 		case "a-z":
 			cards.sort((a, b) => {
@@ -45,7 +64,7 @@ function sortBy(value) {
 			filterDrinksByType(value);
 			break;
 	}
-	cards.forEach((card) => randomsSection.appendChild(card));
+	cards.forEach((card) => drinkContainer.appendChild(card));
 }
 
 function onSortSectionClick(event) {
