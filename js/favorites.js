@@ -17,7 +17,6 @@ function setFavs(favs) {
 function addToFavorites(id) {
 	let card = document.getElementById(id);
 	card.classList.add("favorite");
-	console.log(typeof favsContainer);
 	favsContainer.appendChild(card);
 
 	const favs = getFavorites();
@@ -30,7 +29,6 @@ function removeFromFavs(id) {
 	let card = document.getElementById(id);
 	card.classList.remove("favorite");
 	cardsContainer.prepend(card);
-
 	const favs = getFavorites().filter((favId) => favId !== id);
 	setFavs(favs);
 }

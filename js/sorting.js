@@ -1,22 +1,22 @@
 const sortSection = document.querySelector("#sort-by-select");
 const drinkContainer = document.querySelector(".drink-container");
 const favsContainer = document.querySelector(".favs-container");
+
 export const allCards = [];
 
 function filterDrinksByType(type) {
 	allCards.forEach((card) => {
 		const isFavorite = card.classList.contains("favorite");
 		const cardType = card.querySelector(".type").textContent;
-
 		if (isFavorite) {
-			// Show favorites and ensure they
+			// Show favorites and ensure favs
 			// are in favsContainer
 			card.style.display = "";
 			if (card.parentElement !== favsContainer)
 				favsContainer.appendChild(card);
 		} else {
-			// Show non-favorites matching the filter and keep in main container
-			if (cardType === type || type === "all") {
+			// Show non-favorites matching the filter and keep in drinksontainer
+			if (cardType === type) {
 				card.style.display = "";
 				if (card.parentElement !== drinkContainer) {
 					drinkContainer.appendChild(card);

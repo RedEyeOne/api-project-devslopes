@@ -25,7 +25,6 @@ export function createDrinkCard(drink, isFavorite = false) {
 
 	function extractIngredients(drink) {
 		const ingredients = [];
-
 		for (let i = 1; i <= 15; i++) {
 			const ingredient = drink[`strIngredient${i}`];
 			if (ingredient) {
@@ -34,9 +33,9 @@ export function createDrinkCard(drink, isFavorite = false) {
 				break;
 			}
 		}
-
 		return ingredients;
 	}
+
 	const createIngredientsHTML = (ingredients) => {
 		return `
 		<ul class="info-text">
