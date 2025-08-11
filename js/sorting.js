@@ -9,11 +9,11 @@ function filterDrinksByType(type) {
 		const cardType = card.querySelector(".type").textContent;
 
 		if (isFavorite) {
-			// Show favorites and ensure they are in favsContainer
+			// Show favorites and ensure they
+			// are in favsContainer
 			card.style.display = "";
-			if (card.parentElement !== favsContainer) {
+			if (card.parentElement !== favsContainer)
 				favsContainer.appendChild(card);
-			}
 		} else {
 			// Show non-favorites matching the filter and keep in main container
 			if (cardType === type || type === "all") {
@@ -21,22 +21,21 @@ function filterDrinksByType(type) {
 				if (card.parentElement !== drinkContainer) {
 					drinkContainer.appendChild(card);
 				}
-			} else {
-				card.style.display = "none";
-			}
+			} else card.style.display = "none";
 		}
 	});
 }
 
 function sortBy(value) {
 	//grab only cards from the randoms section
-	const randomsCards = drinkContainer.querySelectorAll(".card");
-	randomsCards.forEach((card) => {
+	const cardsDom = drinkContainer.querySelectorAll(".card");
+	cardsDom.forEach((card) => {
 		card.style.display = ""; // show everything
 	});
-	const cards = [...randomsCards];
-	console.log(cards);
+	const cards = [...cardsDom];
 	switch (value) {
+		case "sort-by":
+			break;
 		case "a-z":
 			cards.sort((a, b) => {
 				const nameA = a.querySelector("h3").innerText.toLowerCase();
@@ -52,7 +51,6 @@ function sortBy(value) {
 			});
 			break;
 		case "type":
-			console.log("case: type");
 			cards.sort((a, b) => {
 				const nameA = a.querySelector(".type").innerText.toLowerCase();
 				const nameB = b.querySelector(".type").innerText.toLowerCase();
@@ -70,7 +68,6 @@ function sortBy(value) {
 function onSortSectionClick(event) {
 	if (event.target.tagName === "SELECT") {
 		sortBy(event.target.value);
-		console.log("Sort By: ", event.target.value);
 	}
 }
 

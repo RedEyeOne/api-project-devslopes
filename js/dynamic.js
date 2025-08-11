@@ -7,18 +7,15 @@ const targetCount = 30;
 const uniqueMap = new Map();
 
 //container variable
-const drinkContainerPointer = ".drink-container";
-const drinkContainer = document.querySelector(drinkContainerPointer);
+const drinkContainer = document.querySelector(".drink-container");
 
 export function createDrinkCard(drink, isFavorite = false) {
 	//first create the individual elements dynamicly
 	const card = document.createElement("div");
 	card.classList.add("card");
-	drinkContainer.appendChild(card);
 
 	const cardTitle = document.createElement("h3");
 	cardTitle.innerHTML = drink.strDrink;
-	card.appendChild(cardTitle);
 
 	const info = document.createElement("div");
 	info.classList.add("info");
@@ -64,6 +61,8 @@ export function createDrinkCard(drink, isFavorite = false) {
 	//append everything to create the actual card in html
 	drinkContainer.appendChild(card);
 	card.appendChild(cardTitle);
+	drinkContainer.appendChild(card);
+	card.appendChild(cardTitle);
 	card.appendChild(info);
 	info.appendChild(cardImg);
 	card.appendChild(category);
@@ -88,8 +87,7 @@ function retryForDuplicates(newDrinks) {
 		return Promise.resolve(finalDrinks);
 	}
 }
-// count drink types with count
-
+// count drink types as options in html with count
 function createTypeSortDynamic(type, count) {
 	const sortSection = document.getElementById("sort-by-select");
 
@@ -112,32 +110,12 @@ function countTypesFromData(drinks) {
 	});
 	return typeMap;
 }
-
-function filterDrinksByType(type, allCards) {
-	drinkContainer.innerHTML = "";
-	const matches = allDrinkCards.filter(
-		(card) => card.querySelector(".type").textContent === type
-	);
-	console.log("Matches found:", matches.length, matches);
-	matches.forEach((drink) => {
-		const card = createDrinkCard(drink);
-		drinkContainer.appendChild(card);
-	});
-}
-
+// get 30 random drinks and create them as cards
 callFromApi(randomUrl, targetCount)
 	.then(retryForDuplicates)
-	// handle
 	.then((finalDrinks) => {
-		console.log("final drinks: ", finalDrinks);
 		const typeMap = countTypesFromData(finalDrinks);
 		typeMap.forEach((count, type) => {
 			createTypeSortDynamic(type, count);
 		});
-		// document
-		// 	.getElementById("sort-by-select")
-		// 	.addEventListener("change", (e) => {
-		// 		const selectedType = e.target.value;
-		// 		filterDrinksByType(selectedType, finalDrinks);
-		// 	});
 	});

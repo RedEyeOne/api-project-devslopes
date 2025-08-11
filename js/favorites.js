@@ -17,6 +17,7 @@ function setFavs(favs) {
 function addToFavorites(id) {
 	let card = document.getElementById(id);
 	card.classList.add("favorite");
+	console.log(typeof favsContainer);
 	favsContainer.appendChild(card);
 
 	const favs = getFavorites();
@@ -28,13 +29,11 @@ function addToFavorites(id) {
 function removeFromFavs(id) {
 	let card = document.getElementById(id);
 	card.classList.remove("favorite");
-	cardsContainer.appendChild(card);
+	cardsContainer.prepend(card);
 
 	const favs = getFavorites().filter((favId) => favId !== id);
 	setFavs(favs);
 }
-
-function createFavoriteDrink(id) {}
 
 function synchStorage() {
 	const favs = getFavorites();
@@ -55,13 +54,10 @@ function synchStorage() {
 }
 function onItemClick(event) {
 	const card = event.target.closest(".card");
-
 	if (!card) return;
-
 	const id = card.id;
 	const favs = getFavorites();
 	const isFavorite = favs.includes(id);
-
 	if (!isFavorite) {
 		addToFavorites(id);
 	} else {
