@@ -1,66 +1,64 @@
 import { callFromApi } from "./ApiCalls.js";
 import { createDrinkCard } from "./dynamic.js";
+import { createCounters } from "./dynamic.js";
 let favsContainer = document.querySelector(".favs-container");
 let cardsContainer = document.querySelector(".drink-container");
 function getFavorites() {
-	try {
-		const favs = localStorage.getItem("favs");
-		return favs ? JSON.parse(favs) : [];
-	} catch (e) {
-		console.error("Failed to parse favorites from localStorage:", e);
-		return [];
-	}
+    try {
+        const favs = localStorage.getItem("favs");
+        return favs ? JSON.parse(favs) : [];
+    } catch (e) {
+        console.error("Failed to parse favorites from localStorage:", e);
+        return [];
+    }
 }
 function setFavs(favs) {
-	localStorage.setItem("favs", JSON.stringify(favs));
+    localStorage.setItem("favs", JSON.stringify(favs));
 }
 function addToFavorites(id) {
-	let card = document.getElementById(id);
-	card.classList.add("favorite");
-	favsContainer.appendChild(card);
+    let card = document.getElementById(id);
+    card.classList.add("favorite");
+    favsContainer.appendChild(card);
 
-	const favs = getFavorites();
-	if (!favs.includes(id)) {
-		favs.push(id);
-		setFavs(favs);
-	}
+    const favs = getFavorites();
+    if (!favs.includes(id)) {
+        favs.push(id);
+        setFavs(favs);
+    }
 }
 function removeFromFavs(id) {
-	let card = document.getElementById(id);
-	card.classList.remove("favorite");
-	cardsContainer.prepend(card);
-	const favs = getFavorites().filter((favId) => favId !== id);
-	setFavs(favs);
+    let card = document.getElementById(id);
+    card.classList.remove("favorite");
+    cardsContainer.prepend(card);
+    const favs = getFavorites().filter((favId) => favId !== id);
+    setFavs(favs);
 }
 
 function synchStorage() {
-	const favs = getFavorites();
-	if (!favs.length) return;
-	const fetchPromises = favs.map((id) => {
-		return callFromApi(
-			`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`,
-			1
-		);
-	});
-	Promise.all(fetchPromises).then((data) => {
-		const drinks = data.flat();
-		drinks.forEach((drink) => {
-			createDrinkCard(drink, true);
-			addToFavorites(drink.idDrink);
-		});
-	});
+    const favs = getFavorites();
+    if (!favs.length) return;
+    const fetchPromises = favs.map((id) => {
+        return callFromApi(
+            `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`,
+            1
+        );
+    });
+    Promise.all(fetchPromises).then((data) => {
+        const drinks = data.flat();
+        drinks.forEach((drink) => {
+            createDrinkCard(drink, true);
+            addToFavorites(drink.idDrink);
+        });
+    });
 }
 function onItemClick(event) {
-	const card = event.target.closest(".card");
-	if (!card) return;
-	const id = card.id;
-	const favs = getFavorites();
-	const isFavorite = favs.includes(id);
-	if (!isFavorite) {
-		addToFavorites(id);
-	} else {
-		removeFromFavs(id);
-	}
+    const card = event.target.closest(".card");
+    if (!card) return;
+    const id = card.id;
+    const favs = getFavorites();
+    const isFavorite = favs.includes(id);
+    isFavorite ? removeFromFavs(id) : addToFavorites(id);
+    createCounters(".drink-container");
 }
 favsContainer.addEventListener("click", onItemClick);
 cardsContainer.addEventListener("click", onItemClick);

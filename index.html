@@ -1,44 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="./styles/style.css" />
-		<link rel="stylesheet" href="./styles/main.css" />
-		<link
-			rel="icon"
-			href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😏</text></svg>"
-		/>
-		<title>Cocktails</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./styles/style.css" />
+        <link rel="stylesheet" href="./styles/main.css" />
+        <link
+            rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😏</text></svg>"
+        />
+        <title>Cocktails</title>
 
-		<title>Document</title>
-	</head>
-	<body>
-		<header>
-			<div>
-				<h1>Welcome to the lounge</h1>
-				<h4>
-					You've had a long journey...<br />
-					Have yourself a refreshment :)
-				</h4>
-			</div>
-		</header>
-		<div class="verticle-container favs-section">
-			<h4 class="favs-text">Your Bar</h4>
-			<h4 class="ingredients-count"></h4>
-			<div class="favs-container"></div>
-		</div>
-		<div class="verticle-container randoms-section">
-			<h4>Random Drink Ideas</h4>
-			<select name="sort by" id="sort-by-select">
-				<option selected="true" value="sort-by">Sort By</option>
-				<option value="a-z">a-z</option>
-				<option value="z-a">z-a</option>
-				<option value="type">Type</option>
-			</select>
-			<div class="drink-container">
-				<!-- dummy card -->
-				<!-- <div class="card">
+        <title>Document</title>
+    </head>
+    <body>
+        <header>
+            <div>
+                <h1>Welcome to the lounge</h1>
+                <h4>
+                    You've had a long journey...<br />
+                    Have yourself a refreshment :)
+                </h4>
+            </div>
+        </header>
+        <div class="verticle-container favs-section">
+            <h4 class="favs-text">Your Bar</h4>
+            <h4 class="ingredients-count"></h4>
+            <div class="favs-container"></div>
+        </div>
+        <div class="verticle-container randoms-section">
+            <h4>Random Drink Ideas</h4>
+            <select name="sort by" id="sort-by-select">
+                <option selected="true" value="sort-by">Sort By</option>
+                <option value="a-z">a-z</option>
+                <option value="z-a">z-a</option>
+                <option value="type">Type</option>
+            </select>
+            <div class="drink-container-counter"></div>
+            <div class="drink-container">
+                <!-- dummy card -->
+                <!-- <div class="card">
 				<h3>"Drink Name</h3>
                 <div class="info-container">
                     <div class="info-text"></div>
@@ -49,12 +50,12 @@
                 </div>
                 <h3>"drink type"</h3>
 			    </div> -->
-			</div>
-		</div>
+            </div>
+        </div>
 
-		<script type="module" src="./js/ApiCalls.js" ;></script>
-		<script type="module" src="./js/dynamic.js"></script>
-		<script type="module" src="./js/favorites.js"></script>
-		<script type="module" src="./js/sorting.js"></script>
-	</body>
+        <script type="module" src="./js/ApiCalls.js" ;></script>
+        <script type="module" src="./js/dynamic.js"></script>
+        <script type="module" src="./js/favorites.js"></script>
+        <script type="module" src="./js/sorting.js"></script>
+    </body>
 </html>
